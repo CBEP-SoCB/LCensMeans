@@ -1,0 +1,28 @@
+Package: LCensMeans
+Type: Package
+Title: Calculate Condtional Means of Left Censored Data
+Version: 0.1.0.9000
+Author@R: person("Curtis", "Bohlen", email="curtis.bohlen@maine.edu",
+                  role = c("aut", "cre"))
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: This tiny package exposes a couple of functions for estimating the
+    conditional mean of censored values for left censored environmental data. It
+    is still common practice in envrionemtnal data analysis to replace
+    "non-detects" in envrionmental data with essentially arbitrary values, 
+    usually  0, one half of the detection limit or the detection limit.  None of
+    these approaches rests on any statistical foundation, and they ignore the
+    information available from knowing that a sample concetration was
+    below a certain value. The goal of this package is to replace non-detects
+    with a maximum likelihood-derived estimator of the mean of the unobserved 
+    (censored) observations.  It estimates those means by calculating maximum
+    likelihood estimates of parameters of a log normal distribution that could
+    have produced the observed censored data, and then simulating a draw from
+    that distribution, and calculating an average of values that would have been
+    censored.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    maxLik,
+    dplyr
+RoxygenNote: 7.1.1
