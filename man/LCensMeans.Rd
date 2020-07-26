@@ -3,7 +3,7 @@
 \docType{package}
 \name{LCensMeans}
 \alias{LCensMeans}
-\title{LCensMeans: Replaces left censored data with estimate of expected value.}
+\title{LCensMeans: Replace left censored data with estimate of expected value}
 \description{
 The LCensMeans package provides functions to replace left censored data with
 estimated values based on fitting a censored lognormal distribution to the
@@ -36,7 +36,7 @@ observations are censored).  The logical vector indicates which observations
 are censored (TRUE) and therefore contain detection limits
 }
 
-\section{LCensMeans functions}{
+\section{LCensMeans Functions}{
 
 \code{left_censored_loglik()} provides a likelihood function for a
 left-censored lognormal distribution. The parameters consist of a vector of
@@ -52,5 +52,22 @@ rather than calculating this for each sample.
 \code{sub_conditional_means()} manages the process of combining the other
 functions to generate a "corrected" vector of estimated concentrations, where
 censored values are replaced by conditional means.
+}
+
+\section{To Do}{
+
+\enumerate{
+  \item Refactor to avoid unnecessary calculation of estimated means
+         for uncensored observations.
+  \item Refactor so simulation does not over- or under-sample to accumulate
+        a sample for estimating conditional means.
+  \item Consider refactoring to use a base R optimization routines directly
+        instead of relying on maxLik.
+  \item Add more checks (errors and/or warnings) for inappropriate inputs.
+  \item Add more examples.
+  \item Add unit tests.
+  \item Generalize function so that user can specify an alternative to the
+        lognormal distribution by passing a distribution name, or  names of.
+}
 }
 

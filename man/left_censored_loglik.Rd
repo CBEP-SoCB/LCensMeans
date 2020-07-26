@@ -19,8 +19,8 @@ indicates which values are detection limits (TRUE) and which are measured
 values (FALSE)}
 }
 \value{
-The calculated log likelihood under the assumption of a lognormal
- distribution.
+The calculated log likelihood under a censored lognormal distribution with
+   the specific parameters.
 }
 \description{
 Calculate the log likelihood of right censored lognormal data.  The
@@ -29,7 +29,7 @@ detection limit, and term for censored values (where all we know is that
 the value falls below the detection limit).
 }
 \examples{
-df = data.frame(sim = sort(rlnorm(25,2,3)),
+df = data.frame(sim = sort(stats::rlnorm(25,2,3)),
                   cens=c(rep.int(TRUE,5), rep.int(FALSE,20)))
 df$sim[1:4] <- df$sim[5]
 left_censored_loglik(c(2,5), df$sim, df$cens)
