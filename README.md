@@ -1,4 +1,4 @@
-See the R Notebook "Conditional Means of Censored Distributions"
+See the R Notebook ["Conditional Means of Censored Distributions"](https://github.com/ccb60/PortlandHarborToxics/blob/master/Analysis/Conditional_means_of_censored_distributions.Rmd)
 for an explanation of the following functions.
 
 # Introduction

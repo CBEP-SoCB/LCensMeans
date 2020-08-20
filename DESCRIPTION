@@ -6,9 +6,9 @@ Authors@R: person("Curtis", "Bohlen", email="curtis.bohlen@maine.edu",
                   role = c("aut", "cre"))
 Description: This tiny package exposes functions for estimating the
     conditional mean of censored values for left censored environmental data. It
-    is still common practice in envrionmentnal data analysis to replace
+    is still common practice in envrionmental data analysis to replace
     "non-detects" with essentially arbitrary values, 
-    usually  0, one half of the detection limit or the detection limit.  None of
+    usually 0, one half of the detection limit, or the detection limit.  None of
     these approaches rests on any statistical foundation, and they ignore the
     information available from knowing that a sample concentration was
     below a certain value. The goal of this package is to replace non-detects
