@@ -4,3 +4,11 @@
 .Ruserdata
 .Rbuildignore
 
+README.html
+**/DATA_NOTES.html
+**/DATA_SOURCES.html
+**/drafts
+**/sources
+**/ideas
+
+*.nb.html
