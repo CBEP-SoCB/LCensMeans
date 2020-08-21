@@ -27,7 +27,7 @@ the mean of values that would have been censored.
 The package can handle different levels of censoring for different observations.
 
 # Caveats
-This package assumes data are distributed according to a log normal
+This package assumes data are distributed according to a lognormal
 distribution. While that is a good first guess for many environmetnal data sets,
 envrionmetnal data are often substantially more right skewed than a lognormal
 distribution implies.  The user is cautioned to evaluate whether making the

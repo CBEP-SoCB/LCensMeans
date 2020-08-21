@@ -37,7 +37,7 @@ for all values, not just censored values.  That will make it slow for large
 data sets or high values of sz.
 }
 \examples{
-df = data.frame(sim = sort(stats::rlnorm(25,2,3)),
+df <- data.frame(sim = sort(stats::rlnorm(25,2,3)),
                 cens=c(rep.int(TRUE,5), rep.int(FALSE,20)))
 df$sim[1:4] <- df$sim[5]
 est <- simulate_mean_censored(lmu = 2, lsigma = 3, cutoff = df$sim)
@@ -50,4 +50,5 @@ geom_line(aes(y = sim, color=cens)) +
   theme_minimal() +
   xlab('Rank Order') +
   ylab('Raw Data (Line) and Conditional Means (points)')
+rm(est)
 }

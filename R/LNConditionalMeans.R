@@ -1,6 +1,6 @@
-#' Calculate the log likelihood of right censored lognormal data.
+#' Calculate the log likelihood of left censored lognormal data.
 #'
-#' Calculate the log likelihood of right censored lognormal data.  The
+#' Calculate the log likelihood of left censored lognormal data.  The
 #' log likelihood has two parts -- a term for observed values over the
 #' detection limit, and term for censored values (where all we know is that
 #' the value falls below the detection limit).
@@ -20,7 +20,7 @@
 #'    the specific parameters.
 #'
 #' @examples
-#' df = data.frame(sim = sort(stats::rlnorm(25,2,3)),
+#' df <- data.frame(sim = sort(stats::rlnorm(25,2,3)),
 #'                   cens=c(rep.int(TRUE,5), rep.int(FALSE,20)))
 #' df$sim[1:4] <- df$sim[5]
 #' left_censored_loglik(c(2,5), df$sim, df$cens)
@@ -37,6 +37,65 @@ left_censored_loglik <- function(params, cc, flg) {
                       stats::dlnorm(cc, lmu, lsigma, log = TRUE)))   # And normal obs.
     return(ll)
 }
+
+#' Calculate maximum likelihood parameter estimates from censored data.
+#'
+#' Calculate maximum likelihood parameter estimates for underlying (uncensored)
+#' distribution based on left censored data.  This is a thin wrapper around
+#' maxLik::maxLik() that strips any missing values and sets it up with
+#' left_censored_loglik() and a simple default starting point for optimization.
+#' Unlike maxLIk(), the return value is ONLY the parameter values, not the whole
+#' maxLik object.
+#'
+#' @references
+#'  Henningsen, Arne and Toomet, Ott (2011). maxLik: A package for maximum
+#'  likelihood estimation in R. Computational Statistics 26(3), 443-458. DOI
+#'  10.1007/s00180-010-0217-1.
+#'
+#' @param cc A vector of data values, including both observed values, where they
+#'   exist, or the detection limits, where data was censored.
+#'
+#' @param flg A vector of TRUE or FALSE values, of the same length as cc, that
+#'   indicates which values are detection limits (TRUE) and which are measured
+#'   values (FALSE).
+#'
+#' @param start  A list or vector containing parameters of the underlying
+#'   uncensored probability distribution (e.g., mean and SD of the related
+#'   normal distribution for the default lognormal distribution).  This is used
+#'   to initialize the numerical search for maximum likelihood estimates.  A
+#'   good starting value may help speed the convergence. If convergence is not
+#'   achieved, consider providing a better starting point for the optimization.
+#'
+#' @return Vector of (named) Maximum likelihood estimators of parameters to the
+#'   underlying (uncensored) probability distribution.  (By default, a lognormal
+#'   distribution). The calculated log likelihood under a censored lognormal
+#'   distribution with the specific parameters.
+#'
+#' @examples
+#'  df <- data.frame(sim = sort(stats::rlnorm(25,2,3)),
+#'                   cens=c(rep.int(TRUE,5), rep.int(FALSE,20)))
+#'  df$sim[1:4] <- df$sim[5]
+#'  find_parms(df$sim, df$cens, c(2,5))
+#'  find_parms(df$sim, df$cens, c(lmu=2,lsigma=5))
+#'  find_parms(df$sim, df$cens, c(1,1))
+#' @export
+find_parms <- function(cc, flg, start = c(1,1))  {
+  stopifnot(length(cc) == length(flg))
+  cc2  <- cc [! (is.na(cc) | is.na(flg))]
+  flg2 <- flg[! (is.na(cc) | is.na(flg))]
+  res <- maxLik::maxLik(left_censored_loglik, start = start,
+                        cc = cc2,
+                        flg = flg2)
+  parms <- res$estimate
+  if (length(names(start))>0) {
+    names(parms) <- names(start)
+  }
+  else {
+    names(parms) <- paste0('p', 1:length(parms))
+  }
+  return(parms)
+}
+
 
 .simulate_mean_censored_single <- function(lmu, lsigma, cutoff,  sz = 1000) {
   estsamplesz <- sz + sz / stats::plnorm(cutoff, lmu, lsigma)  # Guess how many
@@ -75,7 +134,7 @@ left_censored_loglik <- function(params, cc, flg) {
 #' This is wasteful, and potentially confusing to users.  See examples.
 #'
 #' @examples
-#' df = data.frame(sim = sort(stats::rlnorm(25,2,3)),
+#' df <- data.frame(sim = sort(stats::rlnorm(25,2,3)),
 #'                 cens=c(rep.int(TRUE,5), rep.int(FALSE,20)))
 #' df$sim[1:4] <- df$sim[5]
 #' est <- simulate_mean_censored(lmu = 2, lsigma = 3, cutoff = df$sim)
@@ -88,6 +147,7 @@ left_censored_loglik <- function(params, cc, flg) {
 #'   theme_minimal() +
 #'   xlab('Rank Order') +
 #'   ylab('Raw Data (Line) and Conditional Means (points)')
+#' rm(est)
 #' @export
 simulate_mean_censored <-
   Vectorize(.simulate_mean_censored_single, "cutoff")
@@ -132,12 +192,12 @@ simulate_mean_censored <-
 #' @param sz The target size of the (simulated) sample for calculating
 #'  conditional means (default = 1000).
 #'
-#' @param start  A two item list or vector containing the mean and sd of the
-#'   distribution on the log scale (i.e., the parameters of the related
-#'   normal distribution).  This is used to initialize the numerical search for
-#'   maximum likelihood estimates.  A good starting value may help speed the
-#'   convergence. Convergence is not acheived, consider providing a better
-#'   starting point for the optimization.LN
+#' @param start  A list or vector containing parameters of the underlying
+#'   uncensored probability distribution (e.g., mean and SD of the related normal
+#'   distribution for the default lognormal distribution).  This is used to
+#'   initialize the numerical search for maximum likelihood estimates.  A good
+#'   starting value may help speed the convergence. If convergence is not
+#'   achieved, consider providing a better starting point for the optimization.
 #'
 #' @returns a vector containing original uncensored values, and estimates of the
 #' conditional means (expected value) of censored observations. Detection limits
@@ -157,13 +217,13 @@ simulate_mean_censored <-
 #'   theme_minimal() +
 #'   xlab('Rank Order') +
 #'   ylab('Raw Data (Line) and Data with Substitutions (points)')
+#' rm(vals)
 #' @export
 sub_conditional_means <- function(cc, flg, sz = 1001, start= c(1,1)) {
   # Calculate maximum likelihood parameter estimates
-  parms <- maxLik::maxLik(left_censored_loglik, start = start,
-                      cc = cc,
-                      flg = flg)
-  es <- parms$estimate
+  es <- find_parms(cc = cc,
+                    flg = flg,
+                    start = start)
   lmu <- es[1]
   lsigma <- es[2]
   # Calculate replacement values for censored observations

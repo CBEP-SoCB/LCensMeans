@@ -17,12 +17,12 @@ values (FALSE).}
 \item{sz}{The target size of the (simulated) sample for calculating
 conditional means (default = 1000).}
 
-\item{start}{A two item list or vector containing the mean and sd of the
-distribution on the log scale (i.e., the parameters of the related
-normal distribution).  This is used to initialize the numerical search for
-maximum likelihood estimates.  A good starting value may help speed the
-convergence. Convergence is not acheived, consider providing a better
-starting point for the optimization.LN}
+\item{start}{A list or vector containing parameters of the underlying
+uncensored probability distribution (e.g., mean and SD of the related normal
+distribution for the default lognormal distribution).  This is used to
+initialize the numerical search for maximum likelihood estimates.  A good
+starting value may help speed the convergence. If convergence is not
+achieved, consider providing a better starting point for the optimization.}
 }
 \value{
 a vector containing original uncensored values, and estimates of the
@@ -73,4 +73,5 @@ geom_line(aes(y = sim, color=cens)) +
   theme_minimal() +
   xlab('Rank Order') +
   ylab('Raw Data (Line) and Data with Substitutions (points)')
+rm(vals)
 }

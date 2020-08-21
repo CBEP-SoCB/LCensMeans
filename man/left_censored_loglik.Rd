@@ -2,7 +2,7 @@
 % Please edit documentation in R/LNConditionalMeans.R
 \name{left_censored_loglik}
 \alias{left_censored_loglik}
-\title{Calculate the log likelihood of right censored lognormal data.}
+\title{Calculate the log likelihood of left censored lognormal data.}
 \usage{
 left_censored_loglik(params, cc, flg)
 }
@@ -23,13 +23,13 @@ The calculated log likelihood under a censored lognormal distribution with
    the specific parameters.
 }
 \description{
-Calculate the log likelihood of right censored lognormal data.  The
+Calculate the log likelihood of left censored lognormal data.  The
 log likelihood has two parts -- a term for observed values over the
 detection limit, and term for censored values (where all we know is that
 the value falls below the detection limit).
 }
 \examples{
-df = data.frame(sim = sort(stats::rlnorm(25,2,3)),
+df <- data.frame(sim = sort(stats::rlnorm(25,2,3)),
                   cens=c(rep.int(TRUE,5), rep.int(FALSE,20)))
 df$sim[1:4] <- df$sim[5]
 left_censored_loglik(c(2,5), df$sim, df$cens)
