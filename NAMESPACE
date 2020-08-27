@@ -3,4 +3,5 @@
 export(find_parms)
 export(left_censored_loglik)
 export(simulate_mean_censored)
+export(simulate_mean_censored_alt)
 export(sub_conditional_means)

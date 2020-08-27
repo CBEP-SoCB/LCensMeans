@@ -48,6 +48,7 @@
 #' \enumerate{
 #'   \item Refactor to avoid unnecessary calculation of estimated means
 #'          for uncensored observations.
+#'   \item Clean up parameter names
 #'   \item Refactor so simulation does not over- or under-sample to accumulate
 #'         a sample for estimating conditional means.
 #'   \item Consider refactoring to use a base R optimization routines directly
@@ -56,7 +57,7 @@
 #'   \item Add more examples.
 #'   \item Add unit tests.
 #'   \item Generalize function so that user can specify an alternative to the
-#'         lognormal distribution by passing a distribution name, or  names of.
+#'         lognormal distribution by passing a distribution name.
 #' }
 #'@docType package
 #'@name LCensMeans
