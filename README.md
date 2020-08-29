@@ -42,7 +42,7 @@ With a lognormal density in hand, we can estimate a conditional
 mean of "unobserved" observations below a detection or reporting limit
 by sampling from the truncated distribution and colculating a mean.
 
-The first function ("left_censored_loglik") provides a likelihood function
+The first function ("lc_loglik") provides a likelihood function
 for a left-censored lognormal distribution. It is used with maximum
 likelihood estimation to estimate parameters for the underlying
 lognormal distribution.  The parameters consist of a vector of

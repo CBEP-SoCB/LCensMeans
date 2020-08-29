@@ -1,7 +1,7 @@
 Package: LCensMeans
 Type: Package
 Title: Calculate Condtional Means of Left Censored Data
-Version: 0.1.0.9000
+Version: 0.1.1.9000
 Authors@R: person("Curtis", "Bohlen", email="curtis.bohlen@maine.edu",
                   role = c("aut", "cre"))
 Description: This tiny package exposes functions for estimating the
@@ -24,7 +24,8 @@ LazyData: true
 Imports: 
     maxLik,
     dplyr,
-    ggplot2
+    ggplot2,
+    readr
 RoxygenNote: 7.1.1
 Suggests: 
     testthat

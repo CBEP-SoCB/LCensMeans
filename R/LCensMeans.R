@@ -29,18 +29,18 @@
 #' are censored (TRUE) and therefore contain detection limits
 #'
 #' @section LCensMeans Functions:
-#' \code{left_censored_loglik()} provides a likelihood function for a
+#' \code{lc_loglik()} provides a likelihood function for a
 #' left-censored lognormal distribution. The parameters consist of a vector of
 #' concentrations and a vector of flags indicating which observations were
 #' censored, and therefore represent the applicable detection limit.
 #'
-#' \code{simulate_mean_censored()} estimates the conditional mean for a truncated
+#' \code{sim_cmeans()} estimates the conditional mean for a truncated
 #' lognormal distribution, given parameters of the lognormal distribution
 #' and a cutoff value (here, the detection limit). The third function
 #' vectorizes the second, allowing us to pass a vector of detection ' limits,
 #' rather than calculating this for each sample.
 #'
-#' \code{sub_conditional_means()} manages the process of combining the other
+#' \code{sub_cmeans()} manages the process of combining the other
 #' functions to generate a "corrected" vector of estimated concentrations, where
 #' censored values are replaced by conditional means.
 #'
@@ -58,6 +58,7 @@
 #'   \item Add unit tests.
 #'   \item Generalize function so that user can specify an alternative to the
 #'         lognormal distribution by passing a distribution name.
+#'   \item Add function parameters to control handling of NAs.
 #' }
 #'@docType package
 #'@name LCensMeans

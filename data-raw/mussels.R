@@ -6,8 +6,17 @@
 
 
 library(dplyr)
+library(readr)
 
-mussels <- read.csv('data-raw/gulfwatch_pah.csv') %>%
+mussels <- read_csv('data-raw/gulfwatch_pah.csv',
+                    col_types = cols(
+                      Original_Code = col_character(),
+                      Site = col_character(),
+                      Year = col_integer(),
+                      Sample_Type = col_character(),
+                      PAH = col_character(),
+                      Flag = col_logical(),
+                      Concentration = col_double())) %>%
   select(-Original_Code, -Sample_Type)
 
 usethis::use_data(mussels, overwrite = TRUE)

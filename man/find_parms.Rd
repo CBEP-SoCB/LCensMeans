@@ -31,7 +31,7 @@ Vector of (named) Maximum likelihood estimators of parameters to the
 Calculate maximum likelihood parameter estimates for underlying (uncensored)
 distribution based on left censored data.  This is a thin wrapper around
 maxLik::maxLik() that strips any missing values and sets it up with
-left_censored_loglik() and a simple default starting point for optimization.
+lc_loglik() and a simple default starting point for optimization.
 Unlike maxLIk(), the return value is ONLY the parameter values, not the whole
 maxLik object.
 }
