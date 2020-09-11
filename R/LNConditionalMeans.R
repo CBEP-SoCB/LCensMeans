@@ -89,7 +89,7 @@ find_parms <- function(cc, flg, start = c(1,1))  {
   cc2  <- cc [! (is.na(cc) | is.na(flg))]
   flg2 <- flg[! (is.na(cc) | is.na(flg))]
   # More general option  here may be to handle the condition passed up from maxLik
-  # when data are not within the domain of the density funnction.
+  # when data are not within the domain of the density function.
   if (any(cc2 < 0))
     message('Data includes negative concentrations or DLs. Substituting NAs during parameter estimation....\n')
     cc2[cc2<0] <- NA
