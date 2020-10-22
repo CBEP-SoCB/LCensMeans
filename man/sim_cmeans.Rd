@@ -4,7 +4,7 @@
 \alias{sim_cmeans}
 \title{Estimate the conditional mean of unobserved left censored values}
 \usage{
-sim_cmeans(lmu, lsigma, cutoff, sz = 1000)
+sim_cmeans(lmu, lsigma, cutoff, sz = 1000, max_samp = 1e+06)
 }
 \arguments{
 \item{lmu}{The mean (on the log scale) of the lognormal distribution.}
@@ -15,6 +15,10 @@ sim_cmeans(lmu, lsigma, cutoff, sz = 1000)
 
 \item{sz}{The target size of the (simulated) sample for calculating
 conditional means (default = 1000).}
+
+\item{max_samp}{The maximum size of the sample drawn to estimate of
+conditional means. A large value risks lengthy computation, especially for
+data with a small probability of non-detects (default = 1 million).}
 }
 \value{
 a vector of estimated conditional means.  Note that this function

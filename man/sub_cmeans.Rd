@@ -12,7 +12,7 @@ exist, or applicable detection limits, where data was censored.}
 
 \item{flg}{A vector of TRUE or FALSE values, of the same length as cc, that
 indicates which values are detection limits (TRUE) and which are measured
-values (FALSE).}
+values (FALSE).  Detection limits for censored observations can differ.}
 
 \item{sz}{The target size of the (simulated) sample for calculating
 conditional means (default = 1000).}
@@ -25,9 +25,8 @@ starting value may help speed the convergence. If convergence is not
 achieved, consider providing a better starting point for the optimization.}
 }
 \value{
-a vector containing original uncensored values, and estimates of the
-conditional means (expected value) of censored observations. Detection limits
-for  censored observations can differ.
+A vector containing original uncensored values, and estimates of the
+conditional means (expected value) of censored observations.
 }
 \description{
 \code{sub_cmeans} replaces left censored values with estimated

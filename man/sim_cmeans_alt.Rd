@@ -2,10 +2,12 @@
 % Please edit documentation in R/LNConditionalMeans.R
 \name{sim_cmeans_alt}
 \alias{sim_cmeans_alt}
-\title{Estimate the conditional mean of unobserved left censored values (Development Version)}
+\title{Estimate the conditional mean of unobserved left censored values
+(Development Version).}
 \usage{
-sim_cmeans_alt(cc, flag, lmu, lsigma, sz = 1000)
+sim_cmeans_alt(cc, flag, lmu, lsigma, sz = 1000, max_samp = 10^6)
 }
 \description{
-Estimate the conditional mean of unobserved left censored values (Development Version)
+Estimate the conditional mean of unobserved left censored values
+(Development Version).
 }
