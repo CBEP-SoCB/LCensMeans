@@ -4,7 +4,7 @@
 \alias{sub_cmeans}
 \title{Replace censored values with estimated conditional means}
 \usage{
-sub_cmeans(cc, flg, sz = 1000, start = c(1, 1))
+sub_cmeans(cc, flg, sz = 1000, max_samp = 10^6, start = c(1, 1))
 }
 \arguments{
 \item{cc}{A vector of data values, including both observed values, where they
@@ -12,10 +12,14 @@ exist, or applicable detection limits, where data was censored.}
 
 \item{flg}{A vector of TRUE or FALSE values, of the same length as cc, that
 indicates which values are detection limits (TRUE) and which are measured
-values (FALSE).}
+values (FALSE).  Detection limits for censored observations can differ.}
 
 \item{sz}{The target size of the (simulated) sample for calculating
 conditional means (default = 1000).}
+
+\item{max_samp}{The maximum size of the sample drawn to estimate of
+conditional means. A large value risks lengthy computation, especially for
+data with a small probability of non-detects (default = 1 million).}
 
 \item{start}{A list or vector containing parameters of the underlying
 uncensored probability distribution (e.g., mean and SD of the related normal
@@ -25,9 +29,8 @@ starting value may help speed the convergence. If convergence is not
 achieved, consider providing a better starting point for the optimization.}
 }
 \value{
-a vector containing original uncensored values, and estimates of the
-conditional means (expected value) of censored observations. Detection limits
-for  censored observations can differ.
+A vector containing original uncensored values, and estimates of the
+conditional means (expected value) of censored observations.
 }
 \description{
 \code{sub_cmeans} replaces left censored values with estimated

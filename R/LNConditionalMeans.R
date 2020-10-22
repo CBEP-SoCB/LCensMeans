@@ -110,7 +110,7 @@ find_parms <- function(cc, flg, start = c(1,1))  {
 }
 
 
-.sim_single <- function(lmu, lsigma, cutoff,  sz = 1000) {
+.sim_single <- function(lmu, lsigma, cutoff,  sz = 1000, max_samp = 1000000) {
   # I'm a unsure when to throw an error, when to return NA, and when to return
   # some other default value.
   #
@@ -136,8 +136,8 @@ find_parms <- function(cc, flg, start = c(1,1))  {
 
   estsamplesz <- sz + as.integer(sz / plower)  # Guess how many (usually guess high).
 
-  if (estsamplesz > 5 * 10 ^ 5) {
-    message("Estimated sample size required > 500,000. Returning NA.\n")
+  if (estsamplesz > max_samp) {
+    message("Estimated sample size required >", max_samp, ". Returning NA.\n")
     return(NA_real_)
   }
 
@@ -195,6 +195,10 @@ find_parms <- function(cc, flg, start = c(1,1))  {
 #' @param sz The target size of the (simulated) sample for calculating
 #'  conditional means (default = 1000).
 #'
+#' @param max_samp The maximum size of the sample drawn to estimate of
+#'  conditional means. A large value risks lengthy computation, especially for
+#'  data with a small probability of non-detects (default = 1 million).
+#'
 #' @returns a vector of estimated conditional means.  Note that this function
 #' provides conditional means for all observations, not only the censored ones.
 #' This is wasteful, and potentially confusing to users.  See examples.
@@ -218,16 +222,18 @@ find_parms <- function(cc, flg, start = c(1,1))  {
 sim_cmeans <-
   Vectorize(.sim_single, "cutoff")
 
-#' Estimate the conditional mean of unobserved left censored values (Development Version)
+#' Estimate the conditional mean of unobserved left censored values
+#' (Development Version).
 #'@export
-sim_cmeans_alt <- function(cc, flag, lmu, lsigma, sz = 1000) {
+sim_cmeans_alt <- function(cc, flag, lmu, lsigma, sz = 1000, max_samp = 10^6) {
 
   screened_single_sim <- function(cutoff, flg){
     res <- if_else(flg,
                    .sim_single(lmu=lmu,
-                                                  lsigma=lsigma,
-                                                  cutoff = cutoff,
-                                                  sz=sz),
+                               lsigma=lsigma,
+                               cutoff = cutoff,
+                               sz=sz,
+                               max_samp = max_samp),
                    cc)
     return(res)
   }
@@ -271,10 +277,14 @@ sim_cmeans_alt <- function(cc, flag, lmu, lsigma, sz = 1000) {
 #'
 #' @param flg A vector of TRUE or FALSE values, of the same length as cc, that
 #'    indicates which values are detection limits (TRUE) and which are measured
-#'    values (FALSE).
+#'    values (FALSE).  Detection limits for censored observations can differ.
 #'
 #' @param sz The target size of the (simulated) sample for calculating
 #'  conditional means (default = 1000).
+#'
+#' @param max_samp The maximum size of the sample drawn to estimate of
+#'  conditional means. A large value risks lengthy computation, especially for
+#'  data with a small probability of non-detects (default = 1 million).
 #'
 #' @param start  A list or vector containing parameters of the underlying
 #'   uncensored probability distribution (e.g., mean and SD of the related normal
@@ -283,9 +293,8 @@ sim_cmeans_alt <- function(cc, flag, lmu, lsigma, sz = 1000) {
 #'   starting value may help speed the convergence. If convergence is not
 #'   achieved, consider providing a better starting point for the optimization.
 #'
-#' @returns a vector containing original uncensored values, and estimates of the
-#' conditional means (expected value) of censored observations. Detection limits
-#' for  censored observations can differ.
+#' @returns A vector containing original uncensored values, and estimates of the
+#' conditional means (expected value) of censored observations.
 #'
 #' @examples
 #' df = data.frame(sim = sort(stats::rlnorm(25,2,3)),
@@ -303,7 +312,7 @@ sim_cmeans_alt <- function(cc, flag, lmu, lsigma, sz = 1000) {
 #'   ylab('Raw Data (Line) and Data with Substitutions (points)')
 #' rm(vals)
 #' @export
-sub_cmeans <- function(cc, flg, sz = 1000, start= c(1,1)) {
+sub_cmeans <- function(cc, flg, sz = 1000, max_samp = 10^6, start= c(1,1)) {
   # Calculate maximum likelihood parameter estimates
   es <- find_parms(cc = cc,
                     flg = flg,
@@ -312,7 +321,7 @@ sub_cmeans <- function(cc, flg, sz = 1000, start= c(1,1)) {
   lsigma <- es[2]
   # Calculate replacement values for censored observations
   res <- dplyr::if_else(flg,
-                sim_cmeans(lmu, lsigma, cc, sz = sz),
+                sim_cmeans(lmu, lsigma, cc, sz = sz, max_samp = max_samp),
                 cc)
   return(res)
 }
