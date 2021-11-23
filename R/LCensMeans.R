@@ -16,7 +16,7 @@
 #' from the implied lognormal distribution and calculating an estimated mean for
 #' values that were censored.
 #'
-#' #' See the R notebook "Conditional Means of Censored Distributions" in the
+#' See the R notebook "Conditional Means of Censored Distributions" in the
 #' PortlandHarborToxics Git Repository for additional description of the
 #' rationale for the functions. The package can handle different levels of
 #' censoring for different observations.
